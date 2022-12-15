@@ -18,11 +18,17 @@ app.ws('/', (ws, req) => {
             case "connection":
                 connectionHandler(ws, msg)
                 break
+            case "leave":
+                broadcastConnection(ws, msg)
+                break
             case "draw":
                 broadcastConnection(ws, msg)
                 break
         }
     })
+    ws.on('close', function() {
+        delete(ws);
+      });
 })
 
 

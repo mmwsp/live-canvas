@@ -14,16 +14,35 @@ import ClearAll from "../tools/ClearAll";
 import Line from "../tools/Line";
 import Eraser from "../tools/Eraser";
 import Notification from "./Notification";
- 
+
 const Canvas = observer(() => {
 
     const [modal, setModal] = useState(true)
+    const [connection, setConnection] = useState(false)
     const [notificationActive, setNotificationActive] = useState(false)
     const [user, setUser] = useState("")
     const usernameRef = useRef()
     const params = useParams()
     const canvasRef = useRef()
+      
 
+    //for tracking users who leaved the session
+    useEffect(() => {
+        const handleTabClose = event => {
+            canvasState.socket.send(JSON.stringify({
+                id:params.id,
+                username: canvasState.username,
+                method: "leave"
+            }))
+        };
+        window.addEventListener('beforeunload', handleTabClose);
+        return () => {
+          window.removeEventListener('beforeunload', handleTabClose);
+        };
+      }, []);
+
+
+    //for canvas synchronization at start
     useEffect(() => {
         canvasState.setCanvas(canvasRef.current)
         let ctx = canvasRef.current.getContext('2d')
@@ -38,29 +57,40 @@ const Canvas = observer(() => {
         }) 
     }, [])
 
+    //for creating connection and message handle
     useEffect(() => {
         if (canvasState.username) {
             const socket = new WebSocket(`ws://${process.env.REACT_APP_ADRESS}/`);
             canvasState.setSocket(socket)
             canvasState.setSessionId(params.id)
             toolState.setTool(new Brush(canvasRef.current, socket, params.id))
+
             socket.onopen = () => {
-                console.log('Successfully connected')
                 socket.send(JSON.stringify({
                     id:params.id,
                     username: canvasState.username,
                     method: "connection"
                 }))
             }
+
             socket.onmessage = (event) => {
                 let msg = JSON.parse(event.data)
                 switch (msg.method) {
                     case "connection":
+                        setConnection(true)
                         setUser(msg.username)
                         setNotificationActive(true)
                         setTimeout(() => {
                         setNotificationActive(false);
-                        }, 3000);
+                        }, 5000);
+                        break
+                    case "leave":
+                        setConnection(false)
+                        setUser(msg.username)
+                        setNotificationActive(true)
+                        setTimeout(() => {
+                        setNotificationActive(false);
+                        }, 5000);
                         break
                     case "draw":
                         drawHandler(msg)
@@ -69,6 +99,7 @@ const Canvas = observer(() => {
             }
         }
     }, [canvasState.username])
+
 
 
     const drawHandler = (msg) => {
@@ -126,12 +157,11 @@ const Canvas = observer(() => {
         }
     }
 
-
     return (
         <div className="canvas">
             <Modal show={modal} onHide={() => {}}>
                 <Modal.Header >
-                    <Modal.Title>input your username</Modal.Title>
+                    <Modal.Title>Input your username</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <input type="text" ref={usernameRef}/>
@@ -144,7 +174,8 @@ const Canvas = observer(() => {
             </Modal>
             <canvas onMouseUp={() => mouseUpHandler()} ref={canvasRef} width={1200} height={525}/>
             <Notification active={notificationActive} setActive={setNotificationActive}>
-                User {user} has successfully connected
+                {connection ? `User ${user} has successfully connected` 
+                : `User ${user} has disconnected`}
             </Notification>
         </div> 
     );
