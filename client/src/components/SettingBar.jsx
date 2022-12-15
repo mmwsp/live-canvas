@@ -8,7 +8,7 @@ const SettingBar = () => {
            <label htmlFor="line-width" >Line size</label>
            <input onChange={e => toolState.setLineWidth(e.target.value)}
            style={{margin: '0 10px'}} id="line-width" type="number" defaultValue={1} min={1} max={50}/>
-           <label htmlFor="stroke-color">Stroke color</label>
+           <label htmlFor="stroke-color">Stroke color  </label>
            <input id="stroke-color" onChange={e => toolState.setStrokeColor(e.target.value)} type="color"/> 
         </div>
     );

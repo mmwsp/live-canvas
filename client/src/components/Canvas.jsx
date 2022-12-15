@@ -13,10 +13,13 @@ import Circle from "../tools/Circle";
 import ClearAll from "../tools/ClearAll";
 import Line from "../tools/Line";
 import Eraser from "../tools/Eraser";
+import Notification from "./Notification";
  
 const Canvas = observer(() => {
 
     const [modal, setModal] = useState(true)
+    const [notificationActive, setNotificationActive] = useState(false)
+    const [user, setUser] = useState("")
     const usernameRef = useRef()
     const params = useParams()
     const canvasRef = useRef()
@@ -53,7 +56,11 @@ const Canvas = observer(() => {
                 let msg = JSON.parse(event.data)
                 switch (msg.method) {
                     case "connection":
-                        console.log(`user ${msg.username} has connected`)
+                        setUser(msg.username)
+                        setNotificationActive(true)
+                        setTimeout(() => {
+                        setNotificationActive(false);
+                        }, 3000);
                         break
                     case "draw":
                         drawHandler(msg)
@@ -62,6 +69,7 @@ const Canvas = observer(() => {
             }
         }
     }, [canvasState.username])
+
 
     const drawHandler = (msg) => {
         const figure = msg.figure
@@ -135,7 +143,10 @@ const Canvas = observer(() => {
                 </Modal.Footer>
             </Modal>
             <canvas onMouseUp={() => mouseUpHandler()} ref={canvasRef} width={1200} height={525}/>
-        </div>
+            <Notification active={notificationActive} setActive={setNotificationActive}>
+                User {user} has successfully connected
+            </Notification>
+        </div> 
     );
 });
 

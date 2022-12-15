@@ -1,0 +1,23 @@
+.notification {
+    display: flex;
+    position: absolute;
+    bottom: 2vw;
+    right: 1.5vw;
+    background-color: rgb(48, 172, 58);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    border-radius: 4px;
+    width: 270px;
+    opacity: 0;
+    transition: 0.5s;
+
+}
+
+.notification.active {
+    opacity: 1;
+}
+
+.notification__message {
+    color:rgb(255, 255, 255);
+    padding: 10px;
+}
