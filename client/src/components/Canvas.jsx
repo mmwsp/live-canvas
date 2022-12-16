@@ -7,6 +7,7 @@ import Brush from "../tools/Brush";
 import Rect from "../tools/Rect";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import { useParams } from "react-router-dom";
 import axios from 'axios'
 import Circle from "../tools/Circle";
@@ -159,19 +160,32 @@ const Canvas = observer(() => {
 
     return (
         <div className="canvas">
+            
             <Modal show={modal} onHide={() => {}}>
                 <Modal.Header >
-                    <Modal.Title>Input your username</Modal.Title>
+                    <Modal.Title>Welcome</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input type="text" ref={usernameRef}/>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Enter your username:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    autoFocus
+                                    ref={usernameRef}
+                                />
+                        </Form.Group>
+                    </Form>
+                    With empty username you can't set connection with other session participants.
+                    <p><b>Share the link above with people you want to draw together.</b></p>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => connectHandler()}>
-                        Enter
-                    </Button>
+                <Modal.Footer style={{justifyContent: 'center'}}>
+                        <Button variant="outline-secondary" style={{width: '40%'}} size="lg" onClick={() => connectHandler()}>
+                            Enter
+                        </Button>
                 </Modal.Footer>
             </Modal>
+
             <canvas onMouseUp={() => mouseUpHandler()} ref={canvasRef} width={1200} height={525}/>
             <Notification active={notificationActive} setActive={setNotificationActive}>
                 {connection ? `User ${user} has successfully connected` 
