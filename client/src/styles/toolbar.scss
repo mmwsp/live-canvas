@@ -2,12 +2,12 @@
 
 .toolbar {
     height: $toolbar-height;
-    background-color: white;
+    background-color: rgb(243, 254, 255);
     display: flex;
     align-items: center;
     position: absolute;
     width: 100%;
-    box-shadow: 0 4px 5px gray;
+    box-shadow: 0 5px 5px -5px #333;
     z-index: 99;
 
     &__btn {
@@ -61,12 +61,13 @@
 
 .setting-bar {
     height: $toolbar-height;
-    background-color: white;
+    background-color: rgb(246, 254, 255);
     display: flex;
+    justify-content: center;
     align-items: center;
     position: absolute;
+    box-shadow: 0 -5px 5px -5px #333;
     width: 100%;
-    box-shadow: 0 4px 5px gray;
-    top: $toolbar-height;
+    bottom: 1px;
 }
 
