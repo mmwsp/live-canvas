@@ -36,7 +36,7 @@ const Toolbar = () => {
             <button className="toolbar__btn circle" onClick={() => toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
             <button className="toolbar__btn eraser" onClick={() => toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
             <button className="toolbar__btn line" onClick={() => toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
-            <input onChange={e => changeColor(e)} style={{marginLeft: 10}} type="color"/>
+            <input  onChange={e => changeColor(e)} style={{marginLeft: '1vw',borderRadius: '5px'}} type="color"/>
             <button className="toolbar__btn clear" onClick={() => toolState.setTool(new ClearAll(canvasState.canvas, canvasState.socket, canvasState.sessionId))}/>
             <button className="toolbar__btn undo" onClick={() => canvasState.undo()}/>
             <button className="toolbar__btn redo" onClick={() => canvasState.redo()}/>
