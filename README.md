@@ -3,9 +3,9 @@ Web application for drawing online based on Websocket protocol. It allows your d
 You need just share generated session link after loggin in.
 
 ## Technology used
--ReactJS
--NodeJs
--Express
+- ReactJs
+- NodeJs
+- ExpressJs
 
 ## Installation
 
@@ -20,7 +20,7 @@ $ cd LiveCanvas
 ```
 $ cd server
 $ npm install
-$ npm start
+$ npm run dev
 ```
 
 Then you need to set the value of the environment variable `REACT_APP_ADRESS` in the .env file.
