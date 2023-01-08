@@ -1,36 +1,15 @@
 const express = require('express')
 const app = express()
-const WSServer = require('express-ws')(app)
-const aWss = WSServer.getWss()
 const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
+
+const websocket = require('./websocket')(app)
 
 const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use(express.json())
-
-app.ws('/', (ws, req) => {
-    ws.on('message', (msg) => {
-        msg = JSON.parse(msg)
-        switch (msg.method) {
-            case "connection":
-                connectionHandler(ws, msg)
-                break
-            case "leave":
-                broadcastConnection(ws, msg)
-                break
-            case "draw":
-                broadcastConnection(ws, msg)
-                break
-        }
-    })
-    ws.on('close', function() {
-        delete(ws);
-      });
-})
-
 
 app.post('/image', (req, res) => {
     try {
@@ -54,18 +33,23 @@ app.get('/image', (req, res) => {
     }
 } )
 
-
 app.listen(PORT, () => console.log(`server is started on port ${PORT}`))
 
-const connectionHandler = (ws, msg) => {
-    ws.id = msg.id
-    broadcastConnection(ws, msg)
-}
+function deleteJpgFiles() {
 
-const broadcastConnection = (ws, msg) => {
-    aWss.clients.forEach(client => {
-        if(client.id === msg.id){
-            client.send(JSON.stringify(msg))
+    const filesPath = path.join(__dirname, '/files');
+    fs.readdir(filesPath, (err, files) => {
+        if (err) {
+          throw err;
         }
-    })
-}
+  
+        for (const file of files.filter(file => file.endsWith('.jpg'))) {
+          fs.unlink(path.join(filesPath, file), err => {
+              console.log("deleted " + file)
+              if (err) throw err;
+          });
+        }
+      });
+    }
+  
+  setInterval(deleteJpgFiles, 20 * 60 * 1000);
