@@ -20,18 +20,22 @@ $ cd LiveCanvas
 ```
 $ cd server
 $ npm install
-$ npm run dev
+$ npm start
 ```
 
-Then you need to set the value of the environment variable `REACT_APP_ADRESS` in the .env file.
-
 ### Setup and run FrontEnd
+Then you need to set the value of the environment variable `REACT_APP_ADRESS` in the .env file.
 ```
 $ cd client
 $ npm install
 $ npm start
 ```
 
+![Alt text](https://github.com/mmwsp/live-canvas/blob/master/screenshots/scr1.png)
 
+![Alt text](https://github.com/mmwsp/live-canvas/blob/master/screenshots/scr2.png)
 
-*Have fun*
+![Alt text](https://github.com/mmwsp/live-canvas/blob/master/screenshots/scr3.png)
+
+![Alt text](https://github.com/mmwsp/live-canvas/blob/master/screenshots/last.png)
+
