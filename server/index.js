@@ -4,18 +4,26 @@ const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin','Access-Control-Allow-Credentials'],
+    credentials: true
+}));
+
 const websocket = require('./websocket')(app)
 
 const PORT = process.env.PORT || 5000
 
-app.use(cors())
 app.use(express.json())
+
+app.listen(PORT, () => console.log(`server is started on port ${PORT}`))
 
 app.post('/image', (req, res) => {
     try {
         const data = req.body.img.replace(`data:image/png;base64,`, '')
         fs.writeFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`), data, 'base64')
-        return res.status(200).json({message: "Загружено"})
+        return res.status(200).json({message: "Loaded"})
     } catch (e) { 
         console.log(e)
         return res.status(500).json('error')
@@ -33,10 +41,8 @@ app.get('/image', (req, res) => {
     }
 } )
 
-app.listen(PORT, () => console.log(`server is started on port ${PORT}`))
 
 function deleteJpgFiles() {
-
     const filesPath = path.join(__dirname, '/files');
     fs.readdir(filesPath, (err, files) => {
         if (err) {
@@ -45,11 +51,10 @@ function deleteJpgFiles() {
   
         for (const file of files.filter(file => file.endsWith('.jpg'))) {
           fs.unlink(path.join(filesPath, file), err => {
-              console.log("deleted " + file)
               if (err) throw err;
           });
         }
       });
     }
-  
+
   setInterval(deleteJpgFiles, 20 * 60 * 1000);

@@ -1,4 +1,5 @@
 import Tool from "./Tool";
+import canvasState from "../store/canvasState";
 
 export default class Circle extends Tool {
     constructor(canvas, socket, id){
@@ -17,6 +18,7 @@ export default class Circle extends Tool {
         this.socket.send(JSON.stringify({
             method: 'draw',
             id: this.id,
+            username: canvasState.username,
             figure: {
                 type: 'circle',
                 x: this.startX,

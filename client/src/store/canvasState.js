@@ -5,7 +5,9 @@ class CanvasState {
 
     socket = null
     sessionId = null
+    paths = {}
 
+    isModal = true
     undoList = []
     redoList = []
     username = ""

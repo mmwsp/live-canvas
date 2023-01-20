@@ -1,5 +1,5 @@
 import Tool from "./Tool";
-
+import canvasState from "../store/canvasState";
 
 export default class Line extends Tool {
     constructor(canvas, socket, id){
@@ -24,10 +24,11 @@ export default class Line extends Tool {
     }
 
     mouseUpHandler(e) {
-        //if you want reaction on the both stroke and fill color changes send ctx.strokeStyle
+        //if you want line color changing on the both stroke and fill color changes send ctx.strokeStyle
         this.mouseDown = false
         this.socket.send(JSON.stringify({
             method: 'draw',
+            username: canvasState.username,
             id: this.id,
             figure: {
                 type: 'line',

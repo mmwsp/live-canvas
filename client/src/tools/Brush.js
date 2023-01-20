@@ -1,3 +1,5 @@
+import canvasState from "../store/canvasState";
+import toolState from "../store/toolState";
 import Tool from "./Tool";
 
 export default class Brush extends Tool {
@@ -21,17 +23,30 @@ export default class Brush extends Tool {
                 type: 'finish',
             }
         }))
+        
+        
     }
     mouseDownHandler(e) {
         this.mouseDown = true
-        this.ctx.beginPath()
-        this.ctx.moveTo(e.pageX - e.target.offsetLeft, e.pageY - e.target.offsetTop)
+        this.socket.send(JSON.stringify({
+            method: 'draw',
+            id: this.id,
+            username: canvasState.username,
+            figure: {
+                type: 'start-brush',
+                x: e.pageX - e.target.offsetLeft,
+                y: e.pageY - e.target.offsetTop,
+                color: this.ctx.strokeStyle,
+                lineWidth: this.ctx.lineWidth
+            }
+        }))
     }
     mouseMoveHandler(e) {
         if (this.mouseDown) {
             this.socket.send(JSON.stringify({
                 method: 'draw',
                 id: this.id,
+                username: canvasState.username,
                 figure: {
                     type: 'brush',
                     x: e.pageX - e.target.offsetLeft,
@@ -40,13 +55,28 @@ export default class Brush extends Tool {
                     lineWidth: this.ctx.lineWidth
                 }
             }))
+
         }
     }
 
-    static draw(ctx, x, y, color, lineWidth) {
-        ctx.strokeStyle = color
-        ctx.lineWidth = lineWidth
-        ctx.lineTo(x, y)
-        ctx.stroke()
+    static draw(ctx, x, y, color, lineWidth, username) {
+
+        canvasState.paths[username].lineTo(x, y);
+        if(username !== canvasState.username) {
+            ctx.strokeStyle = color
+            ctx.lineWidth = lineWidth
+        }
+        ctx.stroke(canvasState.paths[username]);
+        ctx.strokeStyle = toolState.currentColor
+        ctx.lineWidth = toolState.currentWidth
+
+    }
+    
+
+    static startDraw(ctx, x, y, color, lineWidth, username) {
+        canvasState.paths[username] = new Path2D();
+        canvasState.paths[username].lineWidth = lineWidth
+        canvasState.paths[username].strokeStyle = color
+        canvasState.paths[username].moveTo(x, y);
     }
 }

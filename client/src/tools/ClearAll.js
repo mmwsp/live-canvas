@@ -16,6 +16,7 @@ export default class ClearAll extends Tool {
         this.mouseDown = false
         this.socket.send(JSON.stringify({
             method: 'draw',
+            username: canvasState.username,
             id: this.id,
             figure: {
                 type: 'clearAll',
@@ -24,7 +25,6 @@ export default class ClearAll extends Tool {
     }
     mouseDownHandler(e) {
         this.mouseDown = true
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }
 
     static draw(ctx) {

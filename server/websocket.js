@@ -1,7 +1,8 @@
 module.exports = (app) => {
     const WSServer = require('express-ws')(app)
     const aWss = WSServer.getWss()
-  
+
+
     app.ws('/', (ws, req) => {
         ws.on('message', (msg) => {
             msg = JSON.parse(msg)
@@ -35,4 +36,4 @@ module.exports = (app) => {
         })
     }
 
-  }
+}
