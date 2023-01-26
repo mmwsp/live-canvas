@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const fs = require('fs')
 const path = require('path')
+const bodyParser = require('body-parser')
 
 app.use(cors({
     origin: '*',
@@ -10,6 +11,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin','Access-Control-Allow-Credentials'],
     credentials: true
 }));
+
+app.use(bodyParser.json({limit: '7mb'}))
 
 const websocket = require('./websocket')(app)
 

@@ -29,7 +29,7 @@ const Canvas = observer(() => {
             canvasState.socket.send(JSON.stringify({
                 id:params.id,
                 username: canvasState.username,
-                method: "leave"
+                method: "leave",
             }))
         };
         window.addEventListener('beforeunload', handleTabClose);
@@ -70,7 +70,7 @@ const Canvas = observer(() => {
                 socket.send(JSON.stringify({
                     id:params.id,
                     username: canvasState.username,
-                    method: "connection"
+                    method: "connection",
                 }))
             }
 
@@ -80,6 +80,7 @@ const Canvas = observer(() => {
                     case "connection":
                         setConnection(true)
                         setUser(msg.username)
+                        canvasState.updateUsersConnected(msg.users)
                         setNotificationActive(true)
                         setTimeout(() => {
                         setNotificationActive(false);
@@ -88,6 +89,7 @@ const Canvas = observer(() => {
                     case "leave":
                         setConnection(false)
                         setUser(msg.username)
+                        canvasState.updateUsersConnected(msg.users)
                         setNotificationActive(true)
                         setTimeout(() => {
                         setNotificationActive(false);

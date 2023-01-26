@@ -71,3 +71,28 @@
     bottom: 1px;
 }
 
+.setting-bar > *:not(.counter) {
+    margin: 0.3vw;
+}
+
+.counter {
+    margin-left: 1vw;
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    left:0;
+
+  }
+  
+  .counter::before {
+    content: "";
+    width: 15px;
+
+    height: 15px;
+    border-radius: 50%;
+    background-color: rgb(77, 211, 77);
+    display: inline-block;
+    margin-right: 5px;
+  }
+  
+

@@ -1,10 +1,12 @@
 import React from "react";
 import toolState from "../store/toolState";
+import UsersCounter from "./UsersCounter";
 
 const SettingBar = () => {
 
     return(
         <div className="setting-bar">
+            <UsersCounter/>
            <label htmlFor="line-width">Line size</label>
            <input onChange={e => toolState.setLineWidth(e.target.value)}
            style={{margin: '0 10px', borderRadius: '5px'}} id="line-width" type="number" defaultValue={1} min={1} max={50}/>

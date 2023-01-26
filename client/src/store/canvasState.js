@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { action, makeAutoObservable } from "mobx";
 
 class CanvasState {
     canvas = null
@@ -6,6 +6,7 @@ class CanvasState {
     socket = null
     sessionId = null
     paths = {}
+    usersConnected = 0
 
     isModal = true
     undoList = []
@@ -14,6 +15,10 @@ class CanvasState {
 
     constructor(){
         makeAutoObservable(this)
+    }
+
+    updateUsersConnected(newValue) {
+        this.usersConnected = newValue;
     }
 
     pushToUndo(data) {
