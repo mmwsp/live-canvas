@@ -69,6 +69,20 @@
     box-shadow: 0 -5px 5px -5px #333;
     width: 100%;
     bottom: 1px;
+    
+    &__btn {
+        height: 30px;
+        width: 30px;
+        border: none; 
+        outline: none;
+        cursor: pointer;
+        background-size: cover;
+        margin-left: 1vw;
+    }
+
+    .setBack {
+        background: url("../assets/img/setBackground.png") no-repeat center center;
+    }
 }
 
 .setting-bar > *:not(.counter) {

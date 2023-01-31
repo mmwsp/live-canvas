@@ -17,12 +17,15 @@ module.exports = (app) => {
                 case "draw":
                     broadcastConnection(ws, msg)
                     break
+                case "set-background":
+                    broadcastConnection(ws, msg)
+                    break
             }
         })
-        ws.on('close', function() {
+      /*  ws.on('close', function() {
             delete users[ws.id]
             delete(ws)
-          });
+          }); */
     })
     
     const connectionHandler = (ws, msg) => {
@@ -46,6 +49,15 @@ module.exports = (app) => {
             }
         }
     }
+
+  /*  const closeHandler = (ws) => {
+        if(users[ws.id]) {
+            users[ws.id] -= 1
+            if (users[ws.id] === 0) {
+                delete users[ws.id]
+            }
+        }
+    }*/
 
     const broadcastConnection = (ws, msg) => {
         aWss.clients.forEach(client => {

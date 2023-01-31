@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser')
 
+
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST'],
@@ -12,7 +13,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(bodyParser.json({limit: '7mb'}))
+app.use(bodyParser.json({limit: '5mb'}))
 
 const websocket = require('./websocket')(app)
 

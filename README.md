@@ -2,6 +2,8 @@
 Web application for real-time drawing based on Websocket protocol. It allows your drawing with other people on the same canvas in real time. 
 You need just share generated session link after loggin in.
 
+Demo: https://tranquil-malasada-f247cb.netlify.app/
+
 ## Technology used
 - ReactJs
 - NodeJs

@@ -13,6 +13,7 @@ import Line from "../tools/Line";
 import Notification from "./Notification";
 import ModalWindow from "./ModalWindow";
 
+
 const Canvas = observer(() => {
 
     const [connection, setConnection] = useState(false)
@@ -52,6 +53,7 @@ const Canvas = observer(() => {
                 ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height)
             }
         }) 
+
     }, [])
 
 
@@ -97,6 +99,9 @@ const Canvas = observer(() => {
                         break
                     case "draw":
                         drawHandler(msg)
+                        break
+                    case "set-background":
+                        setBackground(msg.data)
                         break
                 }
             }
@@ -152,6 +157,7 @@ const Canvas = observer(() => {
     const mouseUpHandler = () => {
         canvasState.pushToUndo(canvasRef.current.toDataURL())
         axios.post(`https://${process.env.REACT_APP_ADRESS}/image?id=${params.id}`, {img: canvasRef.current.toDataURL()})
+        .catch(err => console.log(err))
     }
 
     
@@ -161,6 +167,16 @@ const Canvas = observer(() => {
         img.onload = () => {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
             ctx.drawImage(img, 0, 0, ctx.canvas.width, ctx.canvas.height)
+        }
+    }
+
+    const setBackground = (data) => {
+        const ctx = canvasRef.current.getContext('2d')
+        const img = new Image()
+        img.src = data
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+            ctx.drawImage(img, 0, 0, canvasRef.current.width, canvasRef.current.height)
         }
     }
 
