@@ -3,8 +3,7 @@ module.exports = (app) => {
     const aWss = WSServer.getWss()
     let users = {}
 
-
-    app.ws('/', (ws, req) => {
+    app.ws('/draw/', (ws, req) => {
         ws.on('message', (msg) => {
             msg = JSON.parse(msg)
             switch (msg.method) {

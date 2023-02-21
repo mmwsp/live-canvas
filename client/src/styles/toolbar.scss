@@ -63,7 +63,7 @@
     height: $toolbar-height;
     background-color: rgb(246, 254, 255);
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
     position: absolute;
     box-shadow: 0 -5px 5px -5px #333;
@@ -71,8 +71,8 @@
     bottom: 1px;
     
     &__btn {
-        height: 30px;
-        width: 30px;
+        height: 35px;
+        width: 35px;
         border: none; 
         outline: none;
         cursor: pointer;
@@ -81,19 +81,62 @@
     }
 
     .setBack {
+        position: relative;
+        margin: auto;
+        margin-right: 0.5vw;
         background: url("../assets/img/setBackground.png") no-repeat center center;
     }
+
+    .logout {
+        margin-left: auto;
+        margin-right: 1vw;
+        position: relative;
+        background: url("../assets/img/logout.png") no-repeat center center;
+    }
+
+    .logout:hover::before {
+        content: "Logout";
+        display: flex;
+        position: absolute;
+        top: -2.2em;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.5em;
+        font-size: 0.8em;
+        background-color: rgba(64, 64, 64, 0.7);
+        color: #fff;
+        border-radius: 0.25em;
+        white-space: nowrap;
+      }
+
+      .setBack:hover::before {
+        content: "Upload image";
+        display: flex;
+        position: absolute;
+        top: -2.2em;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.5em;
+        font-size: 0.8em;
+        background-color: rgba(64, 64, 64, 0.7);
+        color: #fff;
+        border-radius: 0.25em;
+        white-space: nowrap;
+      }
 }
 
-.setting-bar > *:not(.counter) {
-    margin: 0.3vw;
+.mid-group {
+    display: flex;
+    position: absolute;
+    justify-content: center; 
+    align-items: center;
 }
+
 
 .counter {
     margin-left: 1vw;
-    display: inline-block;
-    vertical-align: middle;
-    position: absolute;
+    display: block;
+    position: relative;
     left:0;
 
   }

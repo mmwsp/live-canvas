@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import canvasState from "../store/canvasState";
 import toolState from "../store/toolState";
 import "../styles/canvas.scss";
@@ -11,7 +11,7 @@ import Circle from "../tools/Circle";
 import ClearAll from "../tools/ClearAll";
 import Line from "../tools/Line";
 import Notification from "./Notification";
-import ModalWindow from "./ModalWindow";
+import { Context } from "..";
 
 
 const Canvas = observer(() => {
@@ -22,7 +22,7 @@ const Canvas = observer(() => {
     const [user, setUser] = useState("")
     const params = useParams()
     const canvasRef = useRef()
-
+    const {authState} = useContext(Context)
 
     //for tracking users who leaved the session
     useEffect(() => {
@@ -39,12 +39,16 @@ const Canvas = observer(() => {
         };
       }, []);
 
+      setTimeout(() => {
+        canvasState.setUsername(authState.user.username)
+        }, 2000);
 
-    //for canvas synchronization at start
+    //for canvas synchronization at start and setting current user
     useEffect(() => {
+
         canvasState.setCanvas(canvasRef.current)
         let ctx = canvasRef.current.getContext('2d')
-        axios.get(`https://${process.env.REACT_APP_ADRESS}/image?id=${params.id}`)
+        axios.get(`http://${process.env.REACT_APP_ADRESS}/draw/image?id=${params.id}`)
         .then(response => {
             const img = new Image()
             img.src = response.data
@@ -60,7 +64,7 @@ const Canvas = observer(() => {
     //for creating connection and message handle
     useEffect(() => {
         if (canvasState.username) {
-            const socket = new WebSocket(`wss://${process.env.REACT_APP_ADRESS}/`);
+            const socket = new WebSocket(`ws://${process.env.REACT_APP_ADRESS}/draw/`);
             setSocketClosed(false)
             canvasState.setSocket(socket)
             canvasState.setSessionId(params.id)
@@ -156,7 +160,7 @@ const Canvas = observer(() => {
     
     const mouseUpHandler = () => {
         canvasState.pushToUndo(canvasRef.current.toDataURL())
-        axios.post(`https://${process.env.REACT_APP_ADRESS}/image?id=${params.id}`, {img: canvasRef.current.toDataURL()})
+        axios.post(`http://${process.env.REACT_APP_ADRESS}/draw/image?id=${params.id}`, {img: canvasRef.current.toDataURL()})
         .catch(err => console.log(err))
     }
 
@@ -182,7 +186,6 @@ const Canvas = observer(() => {
 
     return (
         <div className="canvas">
-            <ModalWindow/>
             <canvas onMouseUp={() => mouseUpHandler()} ref={canvasRef} width={1000} height={650}/>
 
             <Notification active={notificationActive} setActive={setNotificationActive}>

@@ -5,9 +5,10 @@
     height: 100vh;
     justify-content: center;
     align-items: center;
+    background-color:$background-color;
 }
 
 canvas {
     border: 1px solid black;
-    background-color: white;
+    background-color:rgb(255, 255, 255);
 }
