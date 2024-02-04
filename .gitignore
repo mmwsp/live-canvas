@@ -10,6 +10,7 @@
 
 # production
 /client/build
+/server/files
 
 /client/.env
 .env
